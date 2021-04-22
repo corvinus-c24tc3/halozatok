@@ -1,10 +1,21 @@
-﻿var kérdések;
-var kérdésIndex = 0;
+﻿
+var kérdések;
+var kérdés = 0;
+var sorszám = 1;
+var jóVálasz;
 
-var válaszElem1;
-var válaszElem2;
-var válaszElem3;
+window.onload = () => {
 
+    document.getElementById("Következő").onclick = () => {
+        sorszám++;
+        kérdésBetöltés(sorszám);
+    }
+
+    document.getElementById("Vissza").onclick = () => {
+        sorszám--;
+        kérdésBetöltés(sorszám);
+    }
+}
 
 function kérdésBetöltés(id) {
     fetch(`/questions/${id}`)
@@ -19,35 +30,33 @@ function kérdésBetöltés(id) {
         .then(kérdésMegjelenítése);
 }
 
-function kérdésMegjelenítés(kérdés) {
-
-    var kérdésSzöveg = document.getElementById("kérdés_szöveg");
-    kérdésSzöveg.innerHTML = kérdés.questionText;
-
-    válaszElem1.innerHTML = kérdés.answer1;
-    válaszElem2.innerHTML = kérdés.answer2;
-    válaszElem3.innerHTML = kérdés.answer3;
-
+function kérdésMegjelenítése(kérdés) {
+    document.getElementById("kérdés_szöveg").innerHTML = kérdés.questionText;
+    document.getElementById("válasz1").innerHTML = kérdés.answer1;
+    document.getElementById("válasz2").innerHTML = kérdés.answer2;
+    document.getElementById("válasz3").innerHTML = kérdés.answer3;
     if (!kérdés.image == "") {
         document.getElementById("kép1").src = "https://szoft1.comeback.hu/hajo/" + kérdés.image;
     }
     else {
         document.getElementById("kép1").src = ""
     }
-
+    jóVálasz = kérdés.correctAnswer;
+    document.getElementById("válasz1").classList.remove("jó");
+    document.getElementById("válasz1").classList.remove("rossz");
+    document.getElementById("válasz2").classList.remove("jó");
+    document.getElementById("válasz2").classList.remove("rossz");
+    document.getElementById("válasz3").classList.remove("jó");
+    document.getElementById("válasz3").classList.remove("rossz");
 }
 
-window.onload = () => {
-
-    kérdésBetöltés(kérdésIndex);
-
-    document.getElementById("előre").onclick = () => {
-        sorszám++;
-        kérdésBetöltés(sorszám);
+function válasz(v) {
+    console.log(jóVálasz)
+    console.log(v)
+    if (v == jóVálasz) {
+        document.getElementById("válasz" + v).classList.add("jó")
     }
-
-    document.getElementById("vissza").onclick = () => {
-        sorszám--;
-        kérdésBetöltés(sorszám);
+    else {
+        document.getElementById("válasz" + v).classList.add("rossz")
     }
 }
