@@ -15,6 +15,9 @@ window.onload = () => {
         sorszám--;
         kérdésBetöltés(sorszám);
     }
+
+    kérdésBetöltés(sorszám);
+
 }
 
 function kérdésBetöltés(id) {
